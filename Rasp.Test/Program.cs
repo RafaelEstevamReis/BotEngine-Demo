@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Simple.BotUtils.Data;
 using Simple.BotUtils.DI;
 using Simple.BotUtils.Jobs;
 using Simple.BotUtils.Startup;
@@ -14,9 +15,8 @@ namespace Rasp.Test
         {
             Console.WriteLine("Initializing... v0.1");
 
-            setupArgs(args);
+            setupConfig(args);
             setupLogs();
-            setupConfig();
             setupTelegramBot();
             var sch = setupScheduler();
             Injector.Get<ILogger>().Information("Initialization complete");
@@ -25,10 +25,14 @@ namespace Rasp.Test
             sch.RunJobsSynchronously(cancellationSource.Token);
         }
 
-        private static void setupArgs(string[] args)
+        private static void setupConfig(string[] args)
         {
-            var arguments = ArgumentParser.Parse(args);
-            Injector.AddSingleton(arguments);
+            var cfg = ConfigBase.Load<Config>("config.xml");
+            
+            ArgumentParser.ParseInto(args, cfg);
+            if (args.Length > 0) cfg.Save();
+
+            Injector.AddSingleton(cfg);
         }
         private static void setupLogs()
         {
@@ -39,11 +43,6 @@ namespace Rasp.Test
                 .CreateLogger();
             log.Information("Logging started");
             Injector.AddSingleton(log);
-        }
-        private static void setupConfig()
-        {
-            var cfg = Config.Load();
-            Injector.AddSingleton(cfg);
         }
         private static Scheduler setupScheduler()
         {
@@ -62,28 +61,6 @@ namespace Rasp.Test
         private static void setupTelegramBot()
         {
             var cfg = Injector.Get<Config>();
-
-            if (cfg.TelegramToken == null)
-            {
-                var args = Injector.Get<Arguments>();
-                cfg.TelegramToken = args.Get("-token");
-                if (!string.IsNullOrEmpty(cfg.TelegramToken))
-                {
-                    cfg.Save();
-                    Injector.Get<ILogger>().Information("New TelegramBot token registered");
-                }
-            }
-            if (cfg.TelegramAdmin == 0)
-            {
-                var args = Injector.Get<Arguments>();
-                string admin = args.Get("-admin");
-                if (!string.IsNullOrEmpty(admin))
-                {
-                    cfg.TelegramAdmin = int.Parse(admin);
-                    cfg.Save();
-                    Injector.Get<ILogger>().Information("New Telegram admin token registered");
-                }
-            }
 
             if (cfg.TelegramToken == null) throw new Exception("Telgram bot not configured");
             if (cfg.TelegramAdmin == 0) throw new Exception("Telgram admin not configured");
