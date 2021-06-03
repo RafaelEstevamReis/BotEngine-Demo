@@ -27,10 +27,15 @@ namespace Rasp.Test
 
         private static void setupConfig(string[] args)
         {
+            // Load saved config (or create a empty one)
             var cfg = ConfigBase.Load<Config>("config.xml");
-            
-            ArgumentParser.ParseInto(args, cfg);
-            if (args.Length > 0) cfg.Save();
+            // Update config with arguments, if any
+            if (args.Length > 0)
+            {
+                ArgumentParser.ParseInto(args, cfg);
+                // and save to next boot
+                cfg.Save();
+            }
 
             Injector.AddSingleton(cfg);
         }
