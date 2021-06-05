@@ -56,7 +56,7 @@ namespace Rasp.Test
 
             Injector.Get<ILogger>().Information("SETUP Scheduler init {TaskCount} tasks", tasker.JobCount);
 
-            Injector.AddSingleton(typeof(Scheduler), tasker);
+            Injector.AddSingleton(tasker);
             return tasker;
         }
         private static void AddJobs(Scheduler tasker)
@@ -73,7 +73,7 @@ namespace Rasp.Test
             var client = new TelegramBotClient(cfg.TelegramToken);
             Injector.Get<ILogger>().Information("SETUP Telegram bot initialized");
 
-            Injector.AddSingleton(typeof(TelegramBotClient), client);
+            Injector.AddSingleton(client);
         }
     }
 }
