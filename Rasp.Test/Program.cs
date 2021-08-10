@@ -28,7 +28,7 @@ namespace Rasp.Test
         private static void setupConfig(string[] args)
         {
             // Load saved config (or create a empty one)
-            var cfg = ConfigBase.Load<Config>("config.xml");
+            var cfg = Config.Load("config.xml");
             // Update config with arguments, if any
             if (args.Length > 0)
             {

@@ -3,7 +3,7 @@ using Simple.BotUtils.Startup;
 
 namespace Rasp.Test
 {
-    public class Config : ConfigBase
+    public class Config : ConfigBase<Config>
     {
         [ArgumentKey("-token")]
         public string TelegramToken { get; set; }
