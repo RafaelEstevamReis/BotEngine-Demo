@@ -3,6 +3,7 @@ using Simple.BotUtils.Data;
 using Simple.BotUtils.DI;
 using Simple.BotUtils.Jobs;
 using Simple.BotUtils.Startup;
+using Telegram.Bot.Extensions.Polling;
 using System;
 using System.Threading;
 using Telegram.Bot;
@@ -15,13 +16,14 @@ namespace Rasp.Test
         {
             Console.WriteLine("Initializing... v0.1");
 
+            var cancellationSource = new CancellationTokenSource();
+
             setupConfig(args);
             setupLogs();
-            setupTelegramBot();
+            setupTelegramBot(cancellationSource.Token);
             var sch = setupScheduler();
             Injector.Get<ILogger>().Information("Initialization complete");
 
-            var cancellationSource = new CancellationTokenSource();
             sch.RunJobsSynchronously(cancellationSource.Token);
         }
 
@@ -63,7 +65,7 @@ namespace Rasp.Test
         {
             tasker.Add(new TelegramPing());
         }
-        private static void setupTelegramBot()
+        private static void setupTelegramBot(CancellationToken token)
         {
             var cfg = Injector.Get<Config>();
 
@@ -71,6 +73,8 @@ namespace Rasp.Test
             if (cfg.TelegramAdmin == 0) throw new Exception("Telgram admin not configured");
 
             var client = new TelegramBotClient(cfg.TelegramToken);
+            client.StartReceiving(new DefaultUpdateHandler(UpdateHandler.HandleUpdateAsync, UpdateHandler.HandleErrorAsync), token);
+
             Injector.Get<ILogger>().Information("SETUP Telegram bot initialized");
 
             Injector.AddSingleton(client);
