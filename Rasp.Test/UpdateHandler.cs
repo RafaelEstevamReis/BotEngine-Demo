@@ -42,7 +42,7 @@ namespace Rasp.Test
             var ctrl = Injector.Get<ControllerManager>();
             try
             {
-                ctrl.ExecuteFromText(message.Text);
+                ctrl.ExecuteFromText(context: message, message.Text);
             }
             catch (UnkownMethod)
             {
