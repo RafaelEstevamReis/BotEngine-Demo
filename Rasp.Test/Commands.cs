@@ -6,16 +6,22 @@ namespace Rasp.Test
 {
     public class Commands : IController
     {
-        public async void Ping([FromDI] TelegramBotClient client, Message message)
+        private readonly TelegramBotClient client;
+        public Commands(TelegramBotClient client)
+        {
+            this.client = client;
+        }
+
+        public async void Ping(Message message)
         {
             await client.SendTextMessageAsync(message.Chat, "Pong", replyToMessageId: message.MessageId);
         }
 
-        public async void Help([FromDI] TelegramBotClient client, Message message)
+        public async void Help(Message message)
         {
             await client.SendTextMessageAsync(message.Chat, "So much help!", replyToMessageId: message.MessageId);
         }
-        public async void Help([FromDI] TelegramBotClient client, Message message, string commandName)
+        public async void Help(Message message, string commandName)
         {
             await client.SendTextMessageAsync(message.Chat, $"Help for {commandName}", replyToMessageId: message.MessageId);
         }
