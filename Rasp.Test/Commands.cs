@@ -10,5 +10,14 @@ namespace Rasp.Test
         {
             await client.SendTextMessageAsync(message.Chat, "Pong", replyToMessageId: message.MessageId);
         }
+
+        public async void Help([FromDI] TelegramBotClient client, Message message)
+        {
+            await client.SendTextMessageAsync(message.Chat, "So much help!", replyToMessageId: message.MessageId);
+        }
+        public async void Help([FromDI] TelegramBotClient client, Message message, string commandName)
+        {
+            await client.SendTextMessageAsync(message.Chat, $"Help for {commandName}", replyToMessageId: message.MessageId);
+        }
     }
 }
