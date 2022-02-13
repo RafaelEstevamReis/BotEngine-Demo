@@ -73,7 +73,7 @@ namespace Rasp.Test
             if (cfg.TelegramAdmin == 0) throw new Exception("Telgram admin not configured");
 
             var client = new TelegramBotClient(cfg.TelegramToken);
-            client.StartReceiving(new DefaultUpdateHandler(UpdateHandler.HandleUpdateAsync, UpdateHandler.HandleErrorAsync), token);
+            client.StartReceiving(new DefaultUpdateHandler(UpdateHandler.HandleUpdateAsync, UpdateHandler.HandleErrorAsync), cancellationToken: token);
 
             Injector.Get<ILogger>().Information("SETUP Telegram bot initialized");
 
