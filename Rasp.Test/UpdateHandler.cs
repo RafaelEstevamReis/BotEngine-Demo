@@ -39,11 +39,11 @@ namespace Rasp.Test
 
         private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
         {
-            if (message.Text.StartsWith("echo", StringComparison.InvariantCultureIgnoreCase))
-            {
-                await botClient.SendTextMessageAsync(message.Chat, $"Echo:\n{message.Text}", replyToMessageId: message.MessageId);
-                return;
-            }
+            //if (message.Text.StartsWith("echo", StringComparison.InvariantCultureIgnoreCase))
+            //{
+            //    await botClient.SendTextMessageAsync(message.Chat, $"Echo:\n{message.Text}", replyToMessageId: message.MessageId);
+            //    return;
+            //}
 
             var ctrl = Injector.Get<ControllerManager>();
             try
