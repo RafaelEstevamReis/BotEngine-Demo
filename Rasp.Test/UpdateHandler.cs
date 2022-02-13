@@ -39,18 +39,24 @@ namespace Rasp.Test
 
         private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
         {
+            if (message.Text.StartsWith("echo", StringComparison.InvariantCultureIgnoreCase))
+            {
+                await botClient.SendTextMessageAsync(message.Chat, $"Echo:\n{message.Text}", replyToMessageId: message.MessageId);
+                return;
+            }
+
             var ctrl = Injector.Get<ControllerManager>();
             try
             {
                 ctrl.ExecuteFromText(context: message, message.Text);
             }
-            catch (UnkownMethod)
+            catch (UnkownMethod ex)
             {
-                await botClient.SendTextMessageAsync(message.Chat, $"Echo [UKM]:\n{message.Text}", replyToMessageId: message.MessageId);
+                await botClient.SendTextMessageAsync(message.Chat, $"Unkown command {ex.MethodName}", replyToMessageId: message.MessageId);
             }
-            catch (NoSuitableMethodFound)
+            catch (NoSuitableMethodFound ex)
             {
-                await botClient.SendTextMessageAsync(message.Chat, $"Echo [NSM]:\n{message.Text}", replyToMessageId: message.MessageId);
+                await botClient.SendTextMessageAsync(message.Chat, $"Incorrect parameters for {ex.MethodName}\nUse HELP command for help", replyToMessageId: message.MessageId);
             }
             catch (Exception ex)
             {
