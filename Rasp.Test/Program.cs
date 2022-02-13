@@ -7,6 +7,7 @@ using Telegram.Bot.Extensions.Polling;
 using System;
 using System.Threading;
 using Telegram.Bot;
+using Simple.BotUtils.Controllers;
 
 namespace Rasp.Test
 {
@@ -21,6 +22,7 @@ namespace Rasp.Test
             setupConfig(args);
             setupLogs();
             setupTelegramBot(cancellationSource.Token);
+            setupTelegramCommands();
             var sch = setupScheduler();
             Injector.Get<ILogger>().Information("Initialization complete");
 
@@ -79,5 +81,12 @@ namespace Rasp.Test
 
             Injector.AddSingleton(client);
         }
+        private static void setupTelegramCommands()
+        {
+            var ctrl = new ControllerManager()
+                        .AddController<Commands>();
+            Injector.AddSingleton(ctrl);
+        }
+
     }
 }

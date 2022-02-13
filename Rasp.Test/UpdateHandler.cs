@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Simple.BotUtils.Controllers;
+using Simple.BotUtils.DI;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -37,7 +39,23 @@ namespace Rasp.Test
 
         private static async Task BotOnMessageReceived(ITelegramBotClient botClient, Message message)
         {
-            await botClient.SendTextMessageAsync(message.Chat, $"Echo:\n{message.Text}", replyToMessageId: message.MessageId);
+            var ctrl = Injector.Get<ControllerManager>();
+            try
+            {
+                ctrl.ExecuteFromText(message.Text);
+            }
+            catch (KeyNotFoundException)
+            {
+                await botClient.SendTextMessageAsync(message.Chat, $"Echo [KNF]:\n{message.Text}", replyToMessageId: message.MessageId);
+            }
+            catch (NoSuitableMethodFound)
+            {
+                await botClient.SendTextMessageAsync(message.Chat, $"Echo [NSM]:\n{message.Text}", replyToMessageId: message.MessageId);
+            }
+            catch (Exception ex)
+            {
+                await botClient.SendTextMessageAsync(message.Chat, $"Error:\n{ex.Message}", replyToMessageId: message.MessageId);
+            }
         }
 
         private static Task UnknownUpdateHandlerAsync(ITelegramBotClient botClient, Update update)
