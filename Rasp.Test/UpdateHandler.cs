@@ -44,9 +44,9 @@ namespace Rasp.Test
             {
                 ctrl.ExecuteFromText(message.Text);
             }
-            catch (KeyNotFoundException)
+            catch (UnkownMethod)
             {
-                await botClient.SendTextMessageAsync(message.Chat, $"Echo [KNF]:\n{message.Text}", replyToMessageId: message.MessageId);
+                await botClient.SendTextMessageAsync(message.Chat, $"Echo [UKM]:\n{message.Text}", replyToMessageId: message.MessageId);
             }
             catch (NoSuitableMethodFound)
             {
