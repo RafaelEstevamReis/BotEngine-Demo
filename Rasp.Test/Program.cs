@@ -86,6 +86,7 @@ namespace Rasp.Test
             var ctrl = new ControllerManager()
                         .AddController<Commands>()
                         .AddController<HelpCommands>();
+            ctrl.AcceptSlashInMethodName = true;
 
             Injector.AddSingleton(ctrl);
         }
