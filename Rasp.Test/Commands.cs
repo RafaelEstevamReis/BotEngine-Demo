@@ -23,13 +23,5 @@ namespace Rasp.Test
             await client.SendTextMessageAsync(message.Chat, $"Echo\n{text}", replyToMessageId: message.MessageId);
         }
 
-        public async void Help(Message message)
-        {
-            await client.SendTextMessageAsync(message.Chat, "So much help!", replyToMessageId: message.MessageId);
-        }
-        public async void Help(Message message, string commandName)
-        {
-            await client.SendTextMessageAsync(message.Chat, $"Help for {commandName}", replyToMessageId: message.MessageId);
-        }
     }
 }

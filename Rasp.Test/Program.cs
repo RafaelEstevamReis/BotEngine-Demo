@@ -84,7 +84,9 @@ namespace Rasp.Test
         private static void setupTelegramCommands()
         {
             var ctrl = new ControllerManager()
-                        .AddController<Commands>();
+                        .AddController<Commands>()
+                        .AddController<HelpCommands>();
+
             Injector.AddSingleton(ctrl);
         }
 
