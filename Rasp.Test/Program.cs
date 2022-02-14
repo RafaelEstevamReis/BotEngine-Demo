@@ -1,13 +1,13 @@
 ﻿using Serilog;
+using Simple.BotUtils.Controllers;
 using Simple.BotUtils.Data;
 using Simple.BotUtils.DI;
 using Simple.BotUtils.Jobs;
 using Simple.BotUtils.Startup;
-using Telegram.Bot.Extensions.Polling;
 using System;
 using System.Threading;
 using Telegram.Bot;
-using Simple.BotUtils.Controllers;
+using Telegram.Bot.Extensions.Polling;
 
 namespace Rasp.Test
 {

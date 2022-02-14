@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using Serilog;
+﻿using Serilog;
 using Simple.BotUtils.DI;
 using Simple.BotUtils.Jobs;
+using System;
+using System.Threading.Tasks;
 using Telegram.Bot;
 
 namespace Rasp.Test

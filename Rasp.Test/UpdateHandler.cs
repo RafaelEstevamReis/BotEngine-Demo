@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Simple.BotUtils.Controllers;
+using Simple.BotUtils.DI;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Simple.BotUtils.Controllers;
-using Simple.BotUtils.DI;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
